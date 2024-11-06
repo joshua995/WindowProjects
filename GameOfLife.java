@@ -20,17 +20,14 @@ public class GameOfLife {
     public static void main(String[] args) {
         initGrid();
         initWindows();
-        for (int i = 0; i < 2; i++) {
-            generateRandomInitialState();
-            while (simulationOn) {
-                // debugPrintGrid();
-                displayGameOfLife();
-                long start = System.currentTimeMillis();
-                while (System.currentTimeMillis() - start < 100)
-                    ;
-                runGameOfLifeSimulation();
-            }
-            simulationOn = true;
+        generateRandomInitialState();
+        while (simulationOn) {
+            // debugPrintGrid();
+            displayGameOfLife();
+            long start = System.currentTimeMillis();
+            while (System.currentTimeMillis() - start < 100) // Allows simulation to be seen on screen (update rate)
+                ;
+            runGameOfLifeSimulation();
         }
     }
 
