@@ -20,14 +20,17 @@ public class GameOfLife {
     public static void main(String[] args) {
         initGrid();
         initWindows();
-        generateRandomInitialState();
-        while (simulationOn) {
-            // debugPrintGrid();
-            displayGameOfLife();
-            long start = System.currentTimeMillis();
-            while (System.currentTimeMillis() - start < 200)
-                ;
-            runGameOfLifeSimulation();
+        for (int i = 0; i < 2; i++) {
+            generateRandomInitialState();
+            while (simulationOn) {
+                // debugPrintGrid();
+                displayGameOfLife();
+                long start = System.currentTimeMillis();
+                while (System.currentTimeMillis() - start < 100)
+                    ;
+                runGameOfLifeSimulation();
+            }
+            simulationOn = true;
         }
     }
 
@@ -81,15 +84,14 @@ public class GameOfLife {
                 if (grid[row][col] == 1) {
                     if (aliveNeighbourCount(row, col) < 2 || aliveNeighbourCount(row, col) > 3) {// Cell dies
                         gridCopy[row][col] = 0;
-                    } else if (aliveNeighbourCount(row, col) == 2 || aliveNeighbourCount(row, col) == 3) {// Cell dies
-                        // TODO remove this. Do nothing since grid has been copied.
-                    }
+                    } // (aliveNeighbourCount(row, col) == 2 || aliveNeighbourCount(row, col) == 3) {
+                      // Cell stays alive}
                 } else if (aliveNeighbourCount(row, col) == 3) {
                     gridCopy[row][col] = 1;
                 }
             }
         }
-        if (sameGrid(grid, gridCopy)) {
+        if (sameGrid(grid, gridCopy)) {// TODO fix repetitive states
             simulationOn = false; // simulation is at a point where the state will no longer change, so stop its
         }
         grid = deepCopyGrid(gridCopy);
