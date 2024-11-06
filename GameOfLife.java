@@ -25,7 +25,7 @@ public class GameOfLife {
             // debugPrintGrid();
             displayGameOfLife();
             long start = System.currentTimeMillis();
-            while (System.currentTimeMillis() - start < 1000)
+            while (System.currentTimeMillis() - start < 200)
                 ;
             runGameOfLifeSimulation();
         }
@@ -39,6 +39,7 @@ public class GameOfLife {
         // height will store the height of the screen
         int height = (int) size.getHeight();
 
+        // Get grid dimensions based on the predefined cell size
         gridWidth = width / cellSize;
         gridHeight = height / cellSize;
 
