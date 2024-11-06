@@ -13,21 +13,28 @@ public class GameOfLife {
 
     static int gridWidth, gridHeight;
     static int[][] grid;
-    static int cellSize = 50;
+    static int cellSize = 100;
     static MyFrame[][] windows;
-    static boolean simulationOn = true;
 
     public static void main(String[] args) {
         initGrid();
         initWindows();
         generateRandomInitialState();
-        while (simulationOn) {
+        while (true) {
             // debugPrintGrid();
             displayGameOfLife();
             long start = System.currentTimeMillis();
             while (System.currentTimeMillis() - start < 100) // Allows simulation to be seen on screen (update rate)
                 ;
-            runGameOfLifeSimulation();
+            if (!runGameOfLifeSimulation()) {
+                break;
+            }
+        }
+        // Clean up
+        for (int row = 0; row < gridHeight; row++) {
+            for (int col = 0; col < gridWidth; col++) {
+                windows[row][col].dispose(); // Close all windows
+            }
         }
     }
 
@@ -74,24 +81,25 @@ public class GameOfLife {
         }
     }
 
-    static void runGameOfLifeSimulation() {
+    static boolean runGameOfLifeSimulation() {
+        boolean changed = false;
         int[][] gridCopy = deepCopyGrid(grid);// Use this to prep next generation
         for (int row = 0; row < gridHeight; row++) {
             for (int col = 0; col < gridWidth; col++) {
                 if (grid[row][col] == 1) {
                     if (aliveNeighbourCount(row, col) < 2 || aliveNeighbourCount(row, col) > 3) {// Cell dies
                         gridCopy[row][col] = 0;
+                        changed = true;
                     } // (aliveNeighbourCount(row, col) == 2 || aliveNeighbourCount(row, col) == 3) {
                       // Cell stays alive}
-                } else if (aliveNeighbourCount(row, col) == 3) {
+                } else if (grid[row][col] == 0 && aliveNeighbourCount(row, col) == 3) {
                     gridCopy[row][col] = 1;
+                    changed = true;
                 }
             }
         }
-        if (sameGrid(grid, gridCopy)) {// TODO fix repetitive states
-            simulationOn = false; // simulation is at a point where the state will no longer change, so stop its
-        }
         grid = deepCopyGrid(gridCopy);
+        return changed;
     }
 
     static int aliveNeighbourCount(int row, int col) {
