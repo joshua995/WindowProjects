@@ -1,68 +1,54 @@
+package gameOfLife;
 
-/*
- * Joshua Liu
- * November 5, 2024
- * Game of Life simulation shown using JFrame windows
- */
-import java.awt.*;
+import javax.swing.JFrame;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-import initializers.MyFrame;
+public class MyFrame extends JFrame implements Runnable {
+    protected MyPanel myPanel;
+    private Shared shared;
+    private int[] xywh = new int[4];
 
-public class GameOfLife {
+    private int[][] grid;
+    private int gridWidth, gridHeight;
+    private int cellSize;
+    private List<int[]> rectangles = new ArrayList<>();
 
-    static int gridWidth, gridHeight;
-    static int[][] grid;
-    static int cellSize = 100;
-    static MyFrame[][] windows;
-
-    public static void main(String[] args) {
-        initGrid();
-        initWindows();
-        generateRandomInitialState();
-        while (true) {
-            // debugPrintGrid();
-            displayGameOfLife();
-            long start = System.currentTimeMillis();
-            while (System.currentTimeMillis() - start < 100) // Allows simulation to be seen on screen (update rate)
-                ;
-            if (!runGameOfLifeSimulation()) {
-                break;
-            }
-        }
-        // Clean up
-        for (int row = 0; row < gridHeight; row++) {
-            for (int col = 0; col < gridWidth; col++) {
-                windows[row][col].dispose(); // Close all windows
-            }
-        }
+    public MyFrame(int x, int y, int width, int height, Shared shared) {
+        this.setTitle("Cell");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.myPanel = new MyPanel(width, height);
+        this.add(myPanel);
+        this.setUndecorated(true);
+        this.pack();
+        this.setLayout(null);
+        this.setVisible(false);// Makes init simpler
+        this.setLocation(x, y);
+        this.shared = shared;
+        this.cellSize = width / 10;
+        this.xywh[0] = 0;
+        this.xywh[1] = 0;
+        this.xywh[2] = this.cellSize;
+        this.xywh[3] = this.cellSize;
+        this.initGrid();
+        this.generateRandomInitialState(this.grid);
     }
 
-    static void initGrid() {
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();// Get screen resolution
-
-        // width will store the width of the screen
-        int width = (int) size.getWidth();
-        // height will store the height of the screen
-        int height = (int) size.getHeight();
-
+    private void initGrid() {
         // Get grid dimensions based on the predefined cell size
-        gridWidth = width / cellSize;
-        gridHeight = height / cellSize;
+        this.gridWidth = this.getWidth() / cellSize;
+        this.gridHeight = this.getHeight() / cellSize;
 
         grid = new int[gridHeight][gridWidth];
     }
 
-    static void initWindows() {
-        windows = new MyFrame[gridHeight][gridWidth];
-        for (int row = 0; row < gridHeight; row++) {
-            for (int col = 0; col < gridWidth; col++) {
-                windows[row][col] = new MyFrame(col * cellSize, row * cellSize, cellSize, cellSize);
-            }
-        }
-    }
-
-    static void generateRandomInitialState() {
+    private void generateRandomInitialState(int[][] grid) {
         Random random = new Random();
         int iterations = random.nextInt((gridWidth / 2) * (gridHeight / 2));
         for (int i = 0; i < iterations; i++) {
@@ -72,16 +58,7 @@ public class GameOfLife {
         }
     }
 
-    static void debugPrintGrid() {
-        for (int row = 0; row < gridHeight; row++) {
-            for (int col = 0; col < gridWidth; col++) {
-                System.out.print(grid[row][col]);
-            }
-            System.out.println();
-        }
-    }
-
-    static boolean runGameOfLifeSimulation() {
+    private boolean runGameOfLifeSimulation() {
         boolean changed = false;
         int[][] gridCopy = deepCopyGrid(grid);// Use this to prep next generation
         for (int row = 0; row < gridHeight; row++) {
@@ -102,7 +79,7 @@ public class GameOfLife {
         return changed;
     }
 
-    static int aliveNeighbourCount(int row, int col) {
+    private int aliveNeighbourCount(int row, int col) {
         int aliveCounter = 0;
         boolean rz = false, rh = false, cz = false, cw = false; // row zero, row height, col zero, col width
         if (rz = row > 0) {
@@ -148,7 +125,7 @@ public class GameOfLife {
         return aliveCounter;
     }
 
-    static int[][] deepCopyGrid(int[][] grid) {
+    private int[][] deepCopyGrid(int[][] grid) {
         int[][] gridCopy = new int[gridHeight][gridWidth];
         for (int row = 0; row < gridHeight; row++) {
             for (int col = 0; col < gridWidth; col++) {
@@ -158,25 +135,47 @@ public class GameOfLife {
         return gridCopy;
     }
 
-    static boolean sameGrid(int[][] grid, int[][] gridToMatch) {
-        for (int row = 0; row < gridHeight; row++) {
-            for (int col = 0; col < gridWidth; col++) {
-                if (grid[row][col] != gridToMatch[row][col]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    static void displayGameOfLife() {
+    void displayGameOfLife() {
+        rectangles.clear();
         for (int row = 0; row < gridHeight; row++) {
             for (int col = 0; col < gridWidth; col++) {
                 if (grid[row][col] == 1) {
-                    windows[row][col].setVisible(true);
-                } else {
-                    windows[row][col].setVisible(false);
+                    int[] array = { col * this.cellSize, row * this.cellSize };
+                    rectangles.add(array);
                 }
+            }
+        }
+        this.paint(getGraphics());
+    }
+
+    void drawRectangles(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.BLUE);
+        for (int[] r : rectangles) {
+            g2d.fillRect(r[0], r[1], this.cellSize, this.cellSize);
+        }
+    }
+
+    public void paint(Graphics g) {
+        super.paint(g);
+        drawRectangles(g);
+    }
+
+    @Override
+    public void run() {// Run another game of life simulation inside here
+        while (this.shared.isSimulationOn()) {
+            if (this.isVisible()) {
+                System.out.println(" Running" + Thread.currentThread().getName());
+                this.displayGameOfLife();
+                if (this.runGameOfLifeSimulation()) {// Automatic reset
+                    // this.initGrid();
+                    // this.generateRandomInitialState(grid);
+                }
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                // e.printStackTrace();
             }
         }
     }
