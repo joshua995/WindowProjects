@@ -17,7 +17,7 @@ import initializers.Shared;
 public class TicTacToe {
     private static HashMap<Integer, MyFrame> board = new HashMap<>();
     private static int spotSize = 0;
-    private static Shared shared = new Shared();
+    private static Shared shared = new Shared(new MiniMax(null, board));
     private static boolean isGameDrawn = false;
 
     public static void main(String[] args) {
@@ -28,6 +28,10 @@ public class TicTacToe {
             if (checkWinner() || (isGameDrawn = isDraw())) {
                 shared.setIsSimulationOn(false);
                 break;
+            }
+            if (!shared.isPlayer1() && !shared.isPlayerVPlayer()) {
+                shared.makeBestMove(2, 1);
+                shared.setIsPlayer1(!shared.isPlayer1());
             }
             long start = System.currentTimeMillis();
             while (System.currentTimeMillis() - start < 10)
@@ -110,32 +114,5 @@ public class TicTacToe {
             }
         }
         return true;
-    }
-
-    public static void makeBestMove(int maxPlayer, int minPlayer) {
-        int[] boardInt = new int[9];
-        for (int i = 0; i < 9; i++) {
-            boardInt[i] = board.get(i).whichPlayer();
-        }
-        MiniMax mm = new MiniMax(boardInt);
-        int moveToMake = -1;
-        double bestScore = -1;
-        for (int i = 0; i < boardInt.length; i++) {
-            if (boardInt[i] == 0) {
-                boardInt[i] = maxPlayer;
-                double score = mm.miniMax(boardInt, 0, false, maxPlayer, minPlayer);
-                boardInt[i] = 0;
-                if (score > bestScore) {
-                    bestScore = score;
-                    moveToMake = i;
-                }
-            }
-        }
-        if (moveToMake != -1) {
-            MyFrame mf = board.get(moveToMake);
-            mf.setWhichPlayer(maxPlayer);
-            mf.paint(mf.getGraphics(), false);
-            mf.removeMouseListener(mf.getMouseListeners()[0]);
-        }
     }
 }

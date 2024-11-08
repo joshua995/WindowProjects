@@ -1,19 +1,20 @@
 package initializers;
 
+import tictactoe.MiniMax;
 import tictactoe.TicTacToe;
 
 public class Shared {
     private boolean isSimulationOn = true; // For game of life simulation
     private boolean isPlayer1 = true; // For tictactoe
     private boolean isPlayerVPlayer = true;// For tictactoe
-    private TicTacToe ttt;
+    private MiniMax mm; // For tictactoe
 
     public Shared() {// For game of life
 
     }
 
-    public Shared(TicTacToe ttt) {
-        this.ttt = ttt;
+    public Shared(MiniMax mm) {
+        this.mm = mm;
     }
 
     public boolean isSimulationOn() {
@@ -41,6 +42,10 @@ public class Shared {
     }
 
     public void makeBestMove(int maxPlayer, int minPlayer) {
-        this.ttt.makeBestMove(maxPlayer, minPlayer);
+        this.mm.makeBestMove(maxPlayer, minPlayer);
+    }
+
+    public void setMiniMax(MiniMax mm) {
+        this.mm = mm;
     }
 }
