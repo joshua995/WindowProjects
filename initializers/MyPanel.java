@@ -1,4 +1,4 @@
-package gameOfLife;
+package initializers;
 
 import java.awt.Color;
 import java.awt.Dimension;

@@ -2,6 +2,9 @@ package gameOfLife;
 
 import javax.swing.JFrame;
 
+import initializers.MyPanel;
+import initializers.Shared;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

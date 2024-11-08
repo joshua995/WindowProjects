@@ -11,6 +11,8 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import initializers.Shared;
+
 public class GameOfLife {
 
     private static int gridWidth, gridHeight;
