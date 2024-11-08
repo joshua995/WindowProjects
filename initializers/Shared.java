@@ -1,7 +1,6 @@
 package initializers;
 
 import tictactoe.MiniMax;
-import tictactoe.TicTacToe;
 
 public class Shared {
     private boolean isSimulationOn = true; // For game of life simulation
@@ -13,7 +12,7 @@ public class Shared {
 
     }
 
-    public Shared(MiniMax mm) {
+    public Shared(MiniMax mm) {//for tictactoe
         this.mm = mm;
     }
 

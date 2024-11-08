@@ -167,7 +167,6 @@ public class MyFrame extends JFrame implements Runnable {
     public void run() {// Run another game of life simulation inside here
         while (this.shared.isSimulationOn()) {
             if (this.isVisible()) {
-                System.out.println(" Running" + Thread.currentThread().getName());
                 this.displayGameOfLife();
                 if (this.runGameOfLifeSimulation()) {// Automatic reset
                     // this.initGrid();
