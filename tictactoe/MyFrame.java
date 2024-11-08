@@ -17,11 +17,12 @@ public class MyFrame extends JFrame {
     private int startingPos;
     private Shared shared;
     private int whichPlayer;
+    private String type;// Board, Player vs Player button, Player vs Computer button
 
-    public MyFrame(int x, int y, int width, int height, Shared shared) {
-        this.setTitle("Cell");
+    public MyFrame(int x, int y, int width, int height, Color color, Shared shared, String type) {
+        // this.setTitle("");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.myPanel = new MyPanel(width, height);
+        this.myPanel = new MyPanel(width, height, color);
         this.add(myPanel);
         this.setUndecorated(true);
         this.pack();
@@ -32,6 +33,7 @@ public class MyFrame extends JFrame {
         this.startingPos = (width - this.moveSize) / 2;
         this.shared = shared;
         this.whichPlayer = 0;
+        this.type = type;
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -39,19 +41,28 @@ public class MyFrame extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (!shared.isSimulationOn()) {
+                if (type == "board") {
+                    if (!shared.isSimulationOn()) {
+                        removeMouseListener(this);
+                        return;
+                    }
+                    if (shared.isPlayer1()) {
+                        whichPlayer = 1;
+                        paint(getGraphics(), true);
+                    } else if (shared.isPlayerVPlayer() && !shared.isPlayer1()) {
+                        whichPlayer = 2;
+                        paint(getGraphics(), false);
+                    }
+                    if (!shared.isPlayerVPlayer()) {
+                        // Run bot
+                    }
+                    shared.setIsPlayer1(!shared.isPlayer1());
                     removeMouseListener(this);
-                    return;
+                } else if (type == "pvp") {
+                    shared.setIsPlayerVPlayer(true);
+                } else if (type == "pvc") {
+                    shared.setIsPlayerVPlayer(false);
                 }
-                if (shared.isPlayer1()) {
-                    whichPlayer = 1;
-                    paint(getGraphics(), true);
-                } else {
-                    whichPlayer = 2;
-                    paint(getGraphics(), false);
-                }
-                shared.setIsPlayer1(!shared.isPlayer1());
-                removeMouseListener(this);
             }
 
             @Override

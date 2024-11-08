@@ -22,10 +22,10 @@ public class MyFrame extends JFrame implements Runnable {
     private int cellSize;
     private List<int[]> rectangles = new ArrayList<>();
 
-    public MyFrame(int x, int y, int width, int height, Shared shared) {
+    public MyFrame(int x, int y, int width, int height, Shared shared, Color color) {
         this.setTitle("Cell");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.myPanel = new MyPanel(width, height);
+        this.myPanel = new MyPanel(width, height, color);
         this.add(myPanel);
         this.setUndecorated(true);
         this.pack();

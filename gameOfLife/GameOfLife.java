@@ -64,7 +64,8 @@ public class GameOfLife {
         windows = new MyFrame[gridHeight][gridWidth];
         for (int row = 0; row < gridHeight; row++) {
             for (int col = 0; col < gridWidth; col++) {
-                windows[row][col] = new MyFrame(col * cellSize, row * cellSize, cellSize, cellSize, shared);
+                windows[row][col] = new MyFrame(col * cellSize, row * cellSize, cellSize, cellSize, shared,
+                        Color.green);
                 executor.submit(windows[row][col]);
                 // Thread t = new Thread(windows[row][col], row + " ," + col);
                 // t.start();

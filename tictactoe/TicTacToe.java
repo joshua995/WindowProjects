@@ -7,6 +7,7 @@
 
 package tictactoe;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.HashMap;
@@ -21,11 +22,11 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         initBoard();
+        MyFrame playerVplayer = new MyFrame(0, 0, spotSize, spotSize, Color.blue, shared, "pvp");
+        MyFrame playerVcomputer = new MyFrame(0, spotSize, spotSize, spotSize, Color.cyan, shared, "pvc");
         while (shared.isSimulationOn()) {
-            if (checkWinner()) {
+            if (checkWinner(board) || (isGameDrawn = isDraw(board))) {
                 shared.setIsSimulationOn(false);
-                break;
-            } else if (isGameDrawn = isDraw()) {
                 break;
             }
             long start = System.currentTimeMillis();
@@ -44,6 +45,8 @@ public class TicTacToe {
         for (MyFrame frame : board.values()) {
             frame.dispose(); // Close all windows
         }
+        playerVplayer.dispose();
+        playerVcomputer.dispose();
     }
 
     static void initBoard() {
@@ -58,17 +61,20 @@ public class TicTacToe {
         int startingX = (int) ((width - (spotSize * 3)) / 2);
         int startingY = (int) (height * 0.1);
 
+        board.clear();
         int i = 0;
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                board.put(i, new MyFrame(startingX + col * spotSize, startingY + row * spotSize, spotSize, spotSize,
-                        shared));
+                board.put(i,
+                        new MyFrame(startingX + col * spotSize, startingY + row * spotSize, spotSize, spotSize,
+                                Color.green,
+                                shared, "board"));
                 i++;
             }
         }
     }
 
-    static boolean checkWinner() {
+    static boolean checkWinner(HashMap<Integer, MyFrame> board) {
         if ((board.get(0).whichPlayer() == board.get(1).whichPlayer()
                 && board.get(1).whichPlayer() == board.get(2).whichPlayer() && board.get(2).whichPlayer() != 0)
                 || (board.get(3).whichPlayer() == board.get(4).whichPlayer()
@@ -97,7 +103,7 @@ public class TicTacToe {
         return false;
     }
 
-    static boolean isDraw() {
+    static boolean isDraw(HashMap<Integer, MyFrame> board) {
         for (MyFrame frame : board.values()) {
             if (frame.whichPlayer() == 0) {
                 return false;
@@ -105,4 +111,57 @@ public class TicTacToe {
         }
         return true;
     }
+
+    // static double miniMax(String[] board, int depth, boolean isMaximizing, String
+    // maxPlayer, String minPlayer) {
+    // if (checkWinner(board, maxPlayer) == maxPlayer)
+    // return 2;
+    // else if (checkWinner(board, minPlayer) == minPlayer)
+    // return -2;
+    // else if (isDraw(board))
+    // return 0;
+
+    // if (isMaximizing) {
+    // double bestScore = -1;
+    // for (int i = 0; i < board.length; i++) {
+    // if (board[i] == " ") {
+    // board[i] = maxPlayer;
+    // double score = miniMax(board, depth + 1, false, maxPlayer, minPlayer);
+    // board[i] = " ";
+    // bestScore = Math.max(score, bestScore);
+    // }
+    // }
+    // return bestScore;
+    // } else {
+    // double bestScore = 1;
+    // for (int i = 0; i < board.length; i++) {
+    // if (board[i] == " ") {
+    // board[i] = minPlayer;
+    // double score = miniMax(board, depth + 1, true, maxPlayer, minPlayer);
+    // board[i] = " ";
+    // bestScore = Math.min(score, bestScore);
+    // }
+    // }
+    // return bestScore;
+    // }
+    // }
+
+    // static void makeBestMove(String[] board, String maxPlayer, String minPlayer)
+    // {
+    // int moveToMake = -1;
+    // double bestScore = -1;
+    // for (int i = 0; i < board.length; i++) {
+    // if (board[i] == " ") {
+    // board[i] = maxPlayer;
+    // double score = miniMax(board, 0, false, maxPlayer, minPlayer);
+    // board[i] = " ";
+    // if (score > bestScore) {
+    // bestScore = score;
+    // moveToMake = i;
+    // }
+    // }
+    // }
+    // if (moveToMake != -1)
+    // makeMove(board, moveToMake, maxPlayer);
+    // }
 }
