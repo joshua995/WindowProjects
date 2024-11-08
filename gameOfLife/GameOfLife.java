@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 public class GameOfLife {
 
     private static int gridWidth, gridHeight;
-    private static int[][] grid;
+    private static int[][] grid; //
     private static int cellSize = 50;
     private static MyFrame[][] windows;
     private static ExecutorService executor = Executors.newCachedThreadPool();
