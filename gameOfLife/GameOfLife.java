@@ -45,7 +45,7 @@ public class GameOfLife {
         executor.shutdownNow();
     }
 
-    static void initGrid() {
+    private static void initGrid() {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();// Get screen resolution
 
         // width will store the width of the screen
@@ -60,7 +60,7 @@ public class GameOfLife {
         grid = new int[gridHeight][gridWidth];
     }
 
-    static void initWindows() {
+    private static void initWindows() {
         windows = new MyFrame[gridHeight][gridWidth];
         for (int row = 0; row < gridHeight; row++) {
             for (int col = 0; col < gridWidth; col++) {
@@ -73,7 +73,7 @@ public class GameOfLife {
         }
     }
 
-    static void generateRandomInitialState() {
+    private static void generateRandomInitialState() {
         Random random = new Random();
         int iterations = random.nextInt((gridWidth / 2) * (gridHeight / 2));
         for (int i = 0; i < iterations; i++) {
@@ -83,7 +83,7 @@ public class GameOfLife {
         }
     }
 
-    static void debugPrintGrid() {
+    private static void debugPrintGrid() {
         for (int row = 0; row < gridHeight; row++) {
             for (int col = 0; col < gridWidth; col++) {
                 System.out.print(grid[row][col]);
@@ -92,7 +92,7 @@ public class GameOfLife {
         }
     }
 
-    static boolean runGameOfLifeSimulation() {
+    private static boolean runGameOfLifeSimulation() {
         boolean changed = false;
         int[][] gridCopy = deepCopyGrid(grid);// Use this to prep next generation
         for (int row = 0; row < gridHeight; row++) {
@@ -113,7 +113,7 @@ public class GameOfLife {
         return changed;
     }
 
-    static int aliveNeighbourCount(int row, int col) {
+    private static int aliveNeighbourCount(int row, int col) {
         int aliveCounter = 0;
         boolean rz = false, rh = false, cz = false, cw = false; // row zero, row height, col zero, col width
         if (rz = row > 0) {
@@ -159,7 +159,7 @@ public class GameOfLife {
         return aliveCounter;
     }
 
-    static int[][] deepCopyGrid(int[][] grid) {
+    private static int[][] deepCopyGrid(int[][] grid) {
         int[][] gridCopy = new int[gridHeight][gridWidth];
         for (int row = 0; row < gridHeight; row++) {
             for (int col = 0; col < gridWidth; col++) {
@@ -169,18 +169,7 @@ public class GameOfLife {
         return gridCopy;
     }
 
-    static boolean sameGrid(int[][] grid, int[][] gridToMatch) {
-        for (int row = 0; row < gridHeight; row++) {
-            for (int col = 0; col < gridWidth; col++) {
-                if (grid[row][col] != gridToMatch[row][col]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    static void displayGameOfLife() {
+    private static void displayGameOfLife() {
         for (int row = 0; row < gridHeight; row++) {
             for (int col = 0; col < gridWidth; col++) {
                 if (grid[row][col] == 1) {

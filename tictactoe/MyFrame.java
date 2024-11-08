@@ -54,9 +54,10 @@ public class MyFrame extends JFrame {
                         paint(getGraphics(), false);
                     }
                     if (!shared.isPlayerVPlayer()) {
-                        // Run bot
+                        shared.makeBestMove(2, 1);
+                    } else {
+                        shared.setIsPlayer1(!shared.isPlayer1());
                     }
-                    shared.setIsPlayer1(!shared.isPlayer1());
                     removeMouseListener(this);
                 } else if (type == "pvp") {
                     shared.setIsPlayerVPlayer(true);
@@ -104,4 +105,7 @@ public class MyFrame extends JFrame {
         return this.whichPlayer;
     }
 
+    public void setWhichPlayer(int whichPlayer) {
+        this.whichPlayer = whichPlayer;
+    }
 }

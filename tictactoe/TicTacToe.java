@@ -25,7 +25,7 @@ public class TicTacToe {
         MyFrame playerVplayer = new MyFrame(0, 0, spotSize, spotSize, Color.blue, shared, "pvp");
         MyFrame playerVcomputer = new MyFrame(0, spotSize, spotSize, spotSize, Color.cyan, shared, "pvc");
         while (shared.isSimulationOn()) {
-            if (checkWinner(board) || (isGameDrawn = isDraw(board))) {
+            if (checkWinner() || (isGameDrawn = isDraw())) {
                 shared.setIsSimulationOn(false);
                 break;
             }
@@ -49,7 +49,7 @@ public class TicTacToe {
         playerVcomputer.dispose();
     }
 
-    static void initBoard() {
+    private static void initBoard() {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();// Get screen resolution
 
         // width will store the width of the screen
@@ -74,7 +74,7 @@ public class TicTacToe {
         }
     }
 
-    static boolean checkWinner(HashMap<Integer, MyFrame> board) {
+    private static boolean checkWinner() {
         if ((board.get(0).whichPlayer() == board.get(1).whichPlayer()
                 && board.get(1).whichPlayer() == board.get(2).whichPlayer() && board.get(2).whichPlayer() != 0)
                 || (board.get(3).whichPlayer() == board.get(4).whichPlayer()
@@ -103,7 +103,7 @@ public class TicTacToe {
         return false;
     }
 
-    static boolean isDraw(HashMap<Integer, MyFrame> board) {
+    private static boolean isDraw() {
         for (MyFrame frame : board.values()) {
             if (frame.whichPlayer() == 0) {
                 return false;
@@ -112,56 +112,30 @@ public class TicTacToe {
         return true;
     }
 
-    // static double miniMax(String[] board, int depth, boolean isMaximizing, String
-    // maxPlayer, String minPlayer) {
-    // if (checkWinner(board, maxPlayer) == maxPlayer)
-    // return 2;
-    // else if (checkWinner(board, minPlayer) == minPlayer)
-    // return -2;
-    // else if (isDraw(board))
-    // return 0;
-
-    // if (isMaximizing) {
-    // double bestScore = -1;
-    // for (int i = 0; i < board.length; i++) {
-    // if (board[i] == " ") {
-    // board[i] = maxPlayer;
-    // double score = miniMax(board, depth + 1, false, maxPlayer, minPlayer);
-    // board[i] = " ";
-    // bestScore = Math.max(score, bestScore);
-    // }
-    // }
-    // return bestScore;
-    // } else {
-    // double bestScore = 1;
-    // for (int i = 0; i < board.length; i++) {
-    // if (board[i] == " ") {
-    // board[i] = minPlayer;
-    // double score = miniMax(board, depth + 1, true, maxPlayer, minPlayer);
-    // board[i] = " ";
-    // bestScore = Math.min(score, bestScore);
-    // }
-    // }
-    // return bestScore;
-    // }
-    // }
-
-    // static void makeBestMove(String[] board, String maxPlayer, String minPlayer)
-    // {
-    // int moveToMake = -1;
-    // double bestScore = -1;
-    // for (int i = 0; i < board.length; i++) {
-    // if (board[i] == " ") {
-    // board[i] = maxPlayer;
-    // double score = miniMax(board, 0, false, maxPlayer, minPlayer);
-    // board[i] = " ";
-    // if (score > bestScore) {
-    // bestScore = score;
-    // moveToMake = i;
-    // }
-    // }
-    // }
-    // if (moveToMake != -1)
-    // makeMove(board, moveToMake, maxPlayer);
-    // }
+    public static void makeBestMove(int maxPlayer, int minPlayer) {
+        int[] boardInt = new int[9];
+        for (int i = 0; i < 9; i++) {
+            boardInt[i] = board.get(i).whichPlayer();
+        }
+        MiniMax mm = new MiniMax(boardInt);
+        int moveToMake = -1;
+        double bestScore = -1;
+        for (int i = 0; i < boardInt.length; i++) {
+            if (boardInt[i] == 0) {
+                boardInt[i] = maxPlayer;
+                double score = mm.miniMax(boardInt, 0, false, maxPlayer, minPlayer);
+                boardInt[i] = 0;
+                if (score > bestScore) {
+                    bestScore = score;
+                    moveToMake = i;
+                }
+            }
+        }
+        if (moveToMake != -1) {
+            MyFrame mf = board.get(moveToMake);
+            mf.setWhichPlayer(maxPlayer);
+            mf.paint(mf.getGraphics(), false);
+            mf.removeMouseListener(mf.getMouseListeners()[0]);
+        }
+    }
 }
