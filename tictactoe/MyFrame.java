@@ -17,6 +17,7 @@ public class MyFrame extends JFrame {
     private int startingPos;
     private Shared shared;
     private boolean spotTaken;
+    private int whichPlayer;
 
     public MyFrame(int x, int y, int width, int height, Shared shared) {
         this.setTitle("Cell");
@@ -32,6 +33,7 @@ public class MyFrame extends JFrame {
         this.startingPos = (width - this.moveSize) / 2;
         this.shared = shared;
         this.spotTaken = false;
+        this.whichPlayer = 0;
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -39,9 +41,15 @@ public class MyFrame extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                if (!shared.isSimulationOn()) {
+                    removeMouseListener(this);
+                    return;
+                }
                 if (shared.isPlayer1()) {
+                    whichPlayer = 1;
                     paint(getGraphics(), true);
                 } else {
+                    whichPlayer = 2;
                     paint(getGraphics(), false);
                 }
                 shared.setIsPlayer1(!shared.isPlayer1());
@@ -81,6 +89,10 @@ public class MyFrame extends JFrame {
             drawCircle(g);
         else
             drawRectangle(g);
+    }
+
+    public int whichPlayer() {
+        return this.whichPlayer;
     }
 
 }
