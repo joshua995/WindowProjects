@@ -4,7 +4,6 @@ package gameOfLife;
  * Joshua Liu
  * November 5, 2024
  * Game of Life simulation shown using JFrame windows
- * --Next steps: create a gol sim inside each alive cell
  */
 import java.awt.*;
 import java.util.Random;

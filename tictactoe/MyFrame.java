@@ -16,7 +16,6 @@ public class MyFrame extends JFrame {
     private int moveSize;
     private int startingPos;
     private Shared shared;
-    private boolean spotTaken;
     private int whichPlayer;
 
     public MyFrame(int x, int y, int width, int height, Shared shared) {
@@ -32,7 +31,6 @@ public class MyFrame extends JFrame {
         this.moveSize = (int) (width * 0.75);
         this.startingPos = (width - this.moveSize) / 2;
         this.shared = shared;
-        this.spotTaken = false;
         this.whichPlayer = 0;
         this.addMouseListener(new MouseListener() {
             @Override

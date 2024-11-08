@@ -1,3 +1,10 @@
+/*
+ * Joshua Liu
+ * November 7, 2024
+ * Tic tac toe using JFrame windows
+ * Next steps: implement PvP & PvC modes
+ */
+
 package tictactoe;
 
 import java.awt.Dimension;
