@@ -1,11 +1,13 @@
 package tictactoe;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import initializers.MyPanel;
 import initializers.Shared;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -22,9 +24,21 @@ public class MyFrame extends JFrame {
     public MyFrame(int x, int y, int width, int height, Color color, Shared shared, String type) {
         // this.setTitle("");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.myPanel = new MyPanel(width, height, color);
-        this.add(myPanel);
         this.setUndecorated(true);
+        if (type == "pvp") {// Add text for the player vs player window button
+            JLabel label = new JLabel("Player vs. Player");
+            label.setFont(new Font("Comic Sans", Font.BOLD, (int) (width * .1)));
+            label.setForeground(color);
+            this.add(label);
+        } else if (type == "pvc") {// Add text for the player vs player window button
+            JLabel label = new JLabel("Player vs. Computer");
+            label.setFont(new Font("Comic Sans", Font.BOLD, (int) (width * .1)));
+            label.setForeground(color);
+            this.add(label);
+        } else {
+            this.myPanel = new MyPanel(width, height, color);
+            this.add(myPanel);
+        }
         this.pack();
         this.setLayout(null);
         this.setVisible(true);
@@ -56,8 +70,10 @@ public class MyFrame extends JFrame {
                     shared.setIsPlayer1(!shared.isPlayer1());
                     removeMouseListener(this);
                 } else if (type == "pvp") {
+                    shared.setResetBoard(true);
                     shared.setIsPlayerVPlayer(true);
                 } else if (type == "pvc") {
+                    shared.setResetBoard(true);
                     shared.setIsPlayerVPlayer(false);
                 }
             }

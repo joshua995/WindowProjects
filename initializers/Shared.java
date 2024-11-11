@@ -7,12 +7,13 @@ public class Shared {
     private boolean isPlayer1 = true; // For tictactoe
     private boolean isPlayerVPlayer = true;// For tictactoe
     private MiniMax mm; // For tictactoe
+    private boolean resetBoard = false;
 
     public Shared() {// For game of life
 
     }
 
-    public Shared(MiniMax mm) {//for tictactoe
+    public Shared(MiniMax mm) {// for tictactoe
         this.mm = mm;
     }
 
@@ -46,5 +47,13 @@ public class Shared {
 
     public void setMiniMax(MiniMax mm) {
         this.mm = mm;
+    }
+
+    public boolean resetBoard() {
+        return this.resetBoard;
+    }
+
+    public void setResetBoard(boolean resetBoard) {
+        this.resetBoard = resetBoard;
     }
 }

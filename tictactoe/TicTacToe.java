@@ -22,9 +22,13 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         initBoard();
-        MyFrame playerVplayer = new MyFrame(0, 0, spotSize, spotSize, Color.blue, shared, "pvp");
-        MyFrame playerVcomputer = new MyFrame(0, spotSize, spotSize, spotSize, Color.cyan, shared, "pvc");
+        MyFrame playerVplayer = new MyFrame(0, 0, spotSize, spotSize, Color.BLUE, shared, "pvp");
+        MyFrame playerVcomputer = new MyFrame(0, spotSize, spotSize, spotSize, Color.RED, shared, "pvc");
         while (shared.isSimulationOn()) {
+            if (shared.resetBoard()) {
+                initBoard();
+                shared.setResetBoard(false);
+            }
             if (checkWinner() || (isGameDrawn = isDraw())) {
                 shared.setIsSimulationOn(false);
                 break;
@@ -71,8 +75,7 @@ public class TicTacToe {
             for (int col = 0; col < 3; col++) {
                 board.put(i,
                         new MyFrame(startingX + col * spotSize, startingY + row * spotSize, spotSize, spotSize,
-                                Color.green,
-                                shared, "board"));
+                                Color.green, shared, "board"));
                 i++;
             }
         }
