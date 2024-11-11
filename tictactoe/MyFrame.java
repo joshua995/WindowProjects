@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import initializers.MyPanel;
-import initializers.Shared;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,9 +16,20 @@ public class MyFrame extends JFrame {
     protected MyPanel myPanel;
     private int moveSize;
     private int startingPos;
-    private Shared shared;
     private int whichPlayer;
-    private String type;// Board, Player vs Player button, Player vs Computer button
+
+    public MyFrame(int x, int y, int width, int height, Color color, String text) {
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setUndecorated(true);
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Comic Sans", Font.BOLD, (int) (width * .1)));
+        label.setForeground(color);
+        this.add(label);
+        this.pack();
+        this.setLayout(null);
+        this.setVisible(true);
+        this.setLocation(x, y);
+    }
 
     public MyFrame(int x, int y, int width, int height, Color color, Shared shared, String type) {
         // this.setTitle("");
@@ -45,9 +55,7 @@ public class MyFrame extends JFrame {
         this.setLocation(x, y);
         this.moveSize = (int) (width * 0.75);
         this.startingPos = (width - this.moveSize) / 2;
-        this.shared = shared;
         this.whichPlayer = 0;
-        this.type = type;
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -68,6 +76,8 @@ public class MyFrame extends JFrame {
                         paint(getGraphics(), false);
                     }
                     shared.setIsPlayer1(!shared.isPlayer1());
+                    shared.setCurrentPlayerDisplay(0, 300, width, height, Color.green,
+                            shared.isPlayer1() ? "Player 1's turn" : "Player 2's turn");
                     removeMouseListener(this);
                 } else if (type == "pvp") {
                     shared.setResetBoard(true);

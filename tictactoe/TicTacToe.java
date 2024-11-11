@@ -1,8 +1,7 @@
 /*
  * Joshua Liu
- * November 7, 2024
+ * November 10, 2024
  * Tic tac toe using JFrame windows
- * Next steps: implement PvP & PvC modes
  */
 
 package tictactoe;
@@ -10,9 +9,8 @@ package tictactoe;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.util.HashMap;
-
-import initializers.Shared;
 
 public class TicTacToe {
     private static HashMap<Integer, MyFrame> board = new HashMap<>();
@@ -22,8 +20,6 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         initBoard();
-        MyFrame playerVplayer = new MyFrame(0, 0, spotSize, spotSize, Color.BLUE, shared, "pvp");
-        MyFrame playerVcomputer = new MyFrame(0, spotSize, spotSize, spotSize, Color.RED, shared, "pvc");
         while (shared.isSimulationOn()) {
             if (shared.resetBoard()) {
                 initBoard();
@@ -36,6 +32,8 @@ public class TicTacToe {
             if (!shared.isPlayer1() && !shared.isPlayerVPlayer()) {
                 shared.makeBestMove(2, 1);
                 shared.setIsPlayer1(!shared.isPlayer1());
+                shared.setCurrentPlayerDisplay(0, 300, spotSize, spotSize, Color.green,
+                        shared.isPlayer1() ? "Player 1's turn" : "Player 2's turn");
             }
             long start = System.currentTimeMillis();
             while (System.currentTimeMillis() - start < 10)
@@ -47,14 +45,12 @@ public class TicTacToe {
             System.out.println("Game is drawn");
         }
         long start = System.currentTimeMillis();
-        while (System.currentTimeMillis() - start < 3000)
+        while (System.currentTimeMillis() - start < 2000)
             ;
         // Clean up
-        for (MyFrame frame : board.values()) {
-            frame.dispose(); // Close all windows
+        for (Window win : Window.getWindows()) {
+            win.dispose();
         }
-        playerVplayer.dispose();
-        playerVcomputer.dispose();
     }
 
     private static void initBoard() {
@@ -69,6 +65,9 @@ public class TicTacToe {
         int startingX = (int) ((width - (spotSize * 3)) / 2);
         int startingY = (int) (height * 0.1);
 
+        for (Window win : Window.getWindows()) {
+            win.dispose();
+        }
         board.clear();
         int i = 0;
         for (int row = 0; row < 3; row++) {
@@ -79,6 +78,10 @@ public class TicTacToe {
                 i++;
             }
         }
+        MyFrame playerVplayer = new MyFrame(0, 0, spotSize, spotSize, Color.BLUE, shared, "pvp");
+        MyFrame playerVcomputer = new MyFrame(0, spotSize, spotSize, spotSize, Color.RED, shared, "pvc");
+        shared.setCurrentPlayerDisplay(0, 300, spotSize, spotSize, Color.green,
+                shared.isPlayer1() ? "Player 1's turn" : "Player 2's turn");
     }
 
     private static boolean checkWinner() {

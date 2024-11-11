@@ -1,20 +1,28 @@
-package initializers;
+package tictactoe;
 
-import tictactoe.MiniMax;
+import java.awt.Color;
 
 public class Shared {
-    private boolean isSimulationOn = true; // For game of life simulation
-    private boolean isPlayer1 = true; // For tictactoe
-    private boolean isPlayerVPlayer = true;// For tictactoe
-    private MiniMax mm; // For tictactoe
-    private boolean resetBoard = false;
-
-    public Shared() {// For game of life
-
-    }
+    private boolean isSimulationOn = true; // for gameOfLife
+    private boolean isPlayer1 = true; // for tictactoe
+    private boolean isPlayerVPlayer = true;// for tictactoe
+    private MiniMax mm; // for tictactoe
+    private boolean resetBoard = false; // for tictactoe
+    private MyFrame currentPlayerDisplay;
 
     public Shared(MiniMax mm) {// for tictactoe
         this.mm = mm;
+    }
+
+    public void setCurrentPlayerDisplay(int x, int y, int width, int height, Color color, String text) {
+        disposeCurrentPlayerDisplay();
+        currentPlayerDisplay = new MyFrame(x, y, width, height, color, text);
+    }
+
+    public void disposeCurrentPlayerDisplay() {
+        if (currentPlayerDisplay != null) {
+            currentPlayerDisplay.dispose();
+        }
     }
 
     public boolean isSimulationOn() {
