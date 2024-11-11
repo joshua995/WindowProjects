@@ -78,9 +78,11 @@ public class TicTacToe {
                 i++;
             }
         }
-        MyFrame playerVplayer = new MyFrame(0, 0, spotSize, spotSize, Color.BLUE, shared, "pvp");
-        MyFrame playerVcomputer = new MyFrame(0, spotSize, spotSize, spotSize, Color.RED, shared, "pvc");
-        shared.setCurrentPlayerDisplay(0, 300, spotSize, spotSize, Color.green,
+        MyFrame playerVplayer = new MyFrame(startingX - spotSize, startingY, spotSize, spotSize, Color.BLUE, shared,
+                "pvp");
+        MyFrame playerVcomputer = new MyFrame(startingX - spotSize, startingY + spotSize, spotSize, spotSize, Color.RED,
+                shared, "pvc");
+        shared.setCurrentPlayerDisplay(startingX - spotSize, startingY + spotSize  *2, spotSize, spotSize, Color.green,
                 shared.isPlayer1() ? "Player 1's turn" : "Player 2's turn");
     }
 
