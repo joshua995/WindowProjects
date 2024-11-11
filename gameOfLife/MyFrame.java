@@ -2,7 +2,7 @@ package gameOfLife;
 
 import javax.swing.JFrame;
 
-import initializers.MyPanel;
+import common.MyPanel;
 
 import java.awt.Color;
 import java.awt.Graphics;

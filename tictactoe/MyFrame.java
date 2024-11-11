@@ -3,7 +3,7 @@ package tictactoe;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import initializers.MyPanel;
+import common.MyPanel;
 
 import java.awt.Color;
 import java.awt.Font;

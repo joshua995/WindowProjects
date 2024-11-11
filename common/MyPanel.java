@@ -1,4 +1,4 @@
-package initializers;
+package common;
 
 import java.awt.Color;
 import java.awt.Dimension;
