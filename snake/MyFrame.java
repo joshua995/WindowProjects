@@ -20,7 +20,7 @@ public class MyFrame extends JFrame {
         this.setLocation(x, y);
         this.type = type;
         if (type == "head") {
-           // this.setAlwaysOnTop(true);
+            this.setAlwaysOnTop(true);
         } else {
             this.setFocusableWindowState(false);
         }

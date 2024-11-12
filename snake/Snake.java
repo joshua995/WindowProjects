@@ -22,7 +22,8 @@ public class Snake {
 
         apple = new MyFrame(new Random().nextInt(0, width) * cellSize, new Random().nextInt(0, height) * cellSize,
                 cellSize, cellSize, Color.red, shared, "apple");
-        snake.add(new MyFrame(0, 0, cellSize, cellSize, Color.blue, shared, "head"));
+        snake.add(new MyFrame(new Random().nextInt(0, width) * cellSize, new Random().nextInt(0, height) * cellSize,
+                cellSize, cellSize, Color.blue, shared, "head"));
         while (!shared.isGameOver()) {
             moveSnake();
             checkCollision();
@@ -30,6 +31,7 @@ public class Snake {
             while (System.currentTimeMillis() - start < 150)
                 ;
         }
+        snake.get(0).removeKeyListener(snake.get(0).getKeyListeners()[0]);
         for (Window win : Window.getWindows()) {
             win.dispose();
         }
