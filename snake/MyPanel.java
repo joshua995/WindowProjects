@@ -2,12 +2,15 @@ package snake;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel {
+    private JLabel scoreboard;
     public MyPanel(int width, int height, Color color, Shared shared, String type) {
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(color);

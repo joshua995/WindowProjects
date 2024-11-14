@@ -11,14 +11,19 @@ import java.util.ArrayList;
 public class Snake {
     private static List<MyFrame> snake = new ArrayList<>();
     private static MyFrame apple;
+    private static MyFrame scoreboard;
     private static Shared shared = new Shared();
     private static int cellSize = 50;
     private static int width, height;
+    private static int score = 0;
 
     public static void main(String[] args) {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();// Get screen resolution
         width = (int) size.getWidth() / cellSize;
         height = (int) size.getHeight() / cellSize;
+
+        scoreboard = new MyFrame((int) size.getWidth() - cellSize * 4, 0, cellSize * 3, cellSize, Color.blue, shared,
+                "scoreboard");
 
         apple = new MyFrame(new Random().nextInt(0, width) * cellSize, new Random().nextInt(0, height) * cellSize,
                 cellSize, cellSize, Color.red, shared, "apple");
@@ -75,5 +80,7 @@ public class Snake {
                 new MyFrame(snake.get(snake.size() - 1).getX(), snake.get(snake.size() - 1).getY(), cellSize, cellSize,
                         Color.green, shared, "body"));
         apple.setLocation(new Random().nextInt(0, width) * cellSize, new Random().nextInt(0, height) * cellSize);
+        score++;
+        scoreboard.scoreboard().setText("Score: " + score);
     }
 }
