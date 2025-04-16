@@ -47,12 +47,24 @@ public class Snake {
             if (i == 0) {
                 if (shared.direction() == 1) {
                     snake.get(i).setLocation((int) (snake.get(i).getX()), (int) (snake.get(i).getY() - cellSize));
+                    if ((int) (snake.get(i).getY() - cellSize) < 0 - cellSize) {
+                        snake.get(i).setLocation((int) (snake.get(i).getX()), height * cellSize);
+                    }
                 } else if (shared.direction() == 2) {
                     snake.get(i).setLocation((int) (snake.get(i).getX()), (int) (snake.get(i).getY() + cellSize));
+                    if ((int) (snake.get(i).getY() + cellSize) > height * cellSize + cellSize) {
+                        snake.get(i).setLocation((int) (snake.get(i).getX()), 0);
+                    }
                 } else if (shared.direction() == 3) {
                     snake.get(i).setLocation((int) (snake.get(i).getX() - cellSize), (int) (snake.get(i).getY()));
+                    if ((int) (snake.get(i).getX() - cellSize) < 0 - cellSize) {
+                        snake.get(i).setLocation(width * cellSize, (int) (snake.get(i).getY()));
+                    }
                 } else if (shared.direction() == 4) {
                     snake.get(i).setLocation((int) (snake.get(i).getX() + cellSize), (int) (snake.get(i).getY()));
+                    if ((int) (snake.get(i).getX() + cellSize) > width * cellSize + cellSize) {
+                        snake.get(i).setLocation(0, (int) (snake.get(i).getY()));
+                    }
                 }
             } else
                 snake.get(i).setLocation(snake.get(i - 1).getLocation());
