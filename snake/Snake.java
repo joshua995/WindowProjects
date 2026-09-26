@@ -22,7 +22,8 @@ public class Snake {
         width = (int) size.getWidth() / cellSize;
         height = (int) size.getHeight() / cellSize;
 
-        scoreboard = new MyFrame((int) size.getWidth() - cellSize * 4, 0, cellSize * 3, cellSize, Color.blue, shared,
+        scoreboard = new MyFrame((int) size.getWidth() - cellSize * 4, 0, cellSize * 5, cellSize,
+                Color.blue, shared,
                 "scoreboard");
 
         apple = new MyFrame(new Random().nextInt(0, width) * cellSize, new Random().nextInt(0, height) * cellSize,
@@ -36,7 +37,12 @@ public class Snake {
             while (System.currentTimeMillis() - start < 150)
                 ;
         }
-        snake.get(0).removeKeyListener(snake.get(0).getKeyListeners()[0]);
+        try {
+            snake.get(0).removeKeyListener(snake.get(0).getKeyListeners()[0]);
+        } catch (Exception e) {
+            shared.setIsGameOver(true);
+        }
+
         for (Window win : Window.getWindows()) {
             win.dispose();
         }
@@ -93,6 +99,7 @@ public class Snake {
                         Color.green, shared, "body"));
         apple.setLocation(new Random().nextInt(0, width) * cellSize, new Random().nextInt(0, height) * cellSize);
         score++;
-        scoreboard.scoreboard().setText("Score: " + score);
+
+        scoreboard.scoreboard().setText("Score: " + score + "   ");
     }
 }

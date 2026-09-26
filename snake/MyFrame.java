@@ -18,8 +18,9 @@ public class MyFrame extends JFrame {
         this.add(myPanel);
         this.setUndecorated(true);
         if (type == "scoreboard") {
-            scoreboard = new JLabel("Score: 0");
-            scoreboard.setFont(new Font("Comic Sans", Font.PLAIN, (int) (width * .25)));
+            scoreboard = new JLabel("Score: 0       ");
+            scoreboard.setFont(new Font("Comic Sans", Font.PLAIN, (int) (30)));
+            scoreboard.setSize(width, height);
             scoreboard.setBackground(color);
             this.add(scoreboard);
         }
